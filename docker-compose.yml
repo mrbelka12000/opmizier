@@ -1,0 +1,34 @@
+version: '2'
+services:
+  redis__weather:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - optimizer
+    volumes:
+      - redis_data:/data
+
+  postgres_weather:
+    image: postgres:latest
+    container_name: psql
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "mrbelka12000"
+      DATABASE_HOST: "localhost"
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgresData:/var/lib/postgresql/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - optimizer
+
+volumes:
+  redis_data:
+  postgresData:
+
+networks:
+  optimizer:
+    driver: bridge
