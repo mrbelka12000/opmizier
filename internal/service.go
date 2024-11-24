@@ -1,15 +1,22 @@
 package internal
 
-import "log/slog"
+import (
+	"log/slog"
 
+	"github.com/gorilla/schema"
+)
+
+// Service simple business logic implementer
 type Service struct {
-	next Adapter
-	log  *slog.Logger
+	next    adapter
+	decoder *schema.Decoder
+	log     *slog.Logger
 }
 
-func NewService(adapter Adapter, log *slog.Logger) *Service {
+func NewService(adapter adapter, log *slog.Logger) *Service {
 	return &Service{
-		next: adapter,
-		log:  log,
+		next:    adapter,
+		decoder: schema.NewDecoder(),
+		log:     log,
 	}
 }

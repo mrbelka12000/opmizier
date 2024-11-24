@@ -5,13 +5,12 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/mrbelka12000/optimizer/internal/models"
 )
 
 const (
-	defaultDBLoad = 2_000_000
+	defaultDBLoad = 10_000_000
 )
 
 type Repo struct {
@@ -24,62 +23,62 @@ func New(db *sql.DB) *Repo {
 	}
 }
 
-func (r *Repo) List(ctx context.Context, pars models.Data) error {
+func (r *Repo) List(ctx context.Context, req models.Request) error {
 
 	queryWhere := " WHERE "
 	var args []any
-	if pars.ID != 0 {
-		args = append(args, pars.ID)
+	if req.ID != 0 {
+		args = append(args, req.ID)
 		queryWhere += fmt.Sprintf(" index = $%v AND", len(args))
 	}
 
-	if pars.FirstName != "" {
-		args = append(args, pars.FirstName)
+	if req.FirstName != "" {
+		args = append(args, req.FirstName)
 		queryWhere += fmt.Sprintf(" 'First Name' = $%v AND", len(args))
 	}
 
-	if pars.LastName != "" {
-		args = append(args, pars.LastName)
+	if req.LastName != "" {
+		args = append(args, req.LastName)
 		queryWhere += fmt.Sprintf(" 'Last Name' = $%v AND", len(args))
 	}
 
-	if pars.Company != "" {
-		args = append(args, pars.Company)
+	if req.Company != "" {
+		args = append(args, req.Company)
 		queryWhere += fmt.Sprintf(" company = $%v AND", len(args))
 	}
 
-	if pars.City != "" {
-		args = append(args, pars.City)
+	if req.City != "" {
+		args = append(args, req.City)
 		queryWhere += fmt.Sprintf(" city = $%v AND", len(args))
 	}
 
-	if pars.Country != "" {
-		args = append(args, pars.Country)
+	if req.Country != "" {
+		args = append(args, req.Country)
 		queryWhere += fmt.Sprintf(" country = $%v AND", len(args))
 	}
 
-	if pars.Phone1 != "" {
-		args = append(args, pars.Phone1)
+	if req.Phone1 != "" {
+		args = append(args, req.Phone1)
 		queryWhere += fmt.Sprintf(" 'Phone 1' = $%v AND", len(args))
 	}
 
-	if pars.Phone2 != "" {
-		args = append(args, pars.Phone2)
+	if req.Phone2 != "" {
+		args = append(args, req.Phone2)
 		queryWhere += fmt.Sprintf(" 'Phone 2' = $%v AND", len(args))
 	}
 
-	if pars.Email != "" {
-		args = append(args, pars.Email)
+	if req.Email != "" {
+		args = append(args, req.Email)
 		queryWhere += fmt.Sprintf(" email = $%v AND", len(args))
 	}
 
-	if pars.SubscriptionDate != "" {
-		args = append(args, pars.SubscriptionDate)
+	if req.SubscriptionDate != "" {
+		args = append(args, req.SubscriptionDate)
 		queryWhere += fmt.Sprintf(" 'Subscription Date' = $%v AND", len(args))
 	}
 
-	if pars.Website != "" {
-		args = append(args, pars.Website)
+	if req.Website != "" {
+		args = append(args, req.Website)
 		queryWhere += fmt.Sprintf(" website = $%v AND", len(args))
 	}
 	queryWhere = queryWhere[:len(queryWhere)-4] // Remove the trailing " AND"
@@ -98,10 +97,9 @@ func (r *Repo) List(ctx context.Context, pars models.Data) error {
 	       website FROM customers
 ` + queryWhere
 
-	if pars.IsOrEnabled {
+	if req.IsOrEnabled {
 		query = strings.Replace(query, "AND", "OR", -1)
 	}
-	start := time.Now()
 
 	rows, err := r.db.QueryContext(ctx, query, args...)
 	if err != nil {
@@ -109,6 +107,5 @@ func (r *Repo) List(ctx context.Context, pars models.Data) error {
 	}
 	defer rows.Close()
 
-	fmt.Println(time.Since(start).Seconds())
 	return nil
 }

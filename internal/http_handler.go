@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/mrbelka12000/optimizer/internal/models"
@@ -13,14 +12,17 @@ func (s *Service) RegisterHandlers(mux *http.ServeMux) {
 
 func (s *Service) makeListHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := s.next.List(r.Context(), models.Data{
-			ID:          1555,
-			FirstName:   "Jody",
-			IsOrEnabled: true,
-		})
-		if err != nil {
+		var req models.Request
+
+		if err := s.decoder.Decode(&req, r.URL.Query()); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			s.log.Error("cannot decode url params", err)
+			return
+		}
+
+		if err := s.next.List(r.Context(), req); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Println(err)
+			s.log.Error("cannot handle request", err)
 			return
 		}
 

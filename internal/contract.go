@@ -6,6 +6,6 @@ import (
 	"github.com/mrbelka12000/optimizer/internal/models"
 )
 
-type Adapter interface {
-	List(ctx context.Context, pars models.Data) error
+type adapter interface {
+	List(ctx context.Context, pars models.Request) error
 }

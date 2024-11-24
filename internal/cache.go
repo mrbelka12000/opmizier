@@ -2,26 +2,27 @@ package internal
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-redis/redis"
 
 	"github.com/mrbelka12000/optimizer/internal/models"
 )
 
-type Cache struct {
+// cache decorator for retrieve database data
+type cache struct {
 	redis   *redis.Client
-	adapter Adapter
+	adapter adapter
 }
 
-func newCache(redis *redis.Client, adapter Adapter) *Cache {
-	return &Cache{
+func newCache(redis *redis.Client, adapter adapter) *cache {
+	return &cache{
 		redis:   redis,
 		adapter: adapter,
 	}
 }
 
-func (c *Cache) List(ctx context.Context, pars models.Data) error {
-	fmt.Println("popal")
-	return c.adapter.List(ctx, pars)
+func (c *cache) List(ctx context.Context, req models.Request) error {
+	// TODO try to cache request data
+
+	return c.adapter.List(ctx, req)
 }
