@@ -1,6 +1,7 @@
 version: '2'
 services:
-  redis__weather:
+
+  redis:
     image: redis
     container_name: redis
     ports:
@@ -10,13 +11,12 @@ services:
     volumes:
       - redis_data:/data
 
-  postgres_weather:
-    image: postgres:latest
+  postgres:
+    image: mrbelka12000/postgres-with-data:0.1.1
     container_name: psql
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "mrbelka12000"
-      DATABASE_HOST: "localhost"
     ports:
       - '5432:5432'
     volumes:
@@ -25,9 +25,51 @@ services:
     networks:
       - optimizer
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus
+      - prom_data:/prometheus
+    networks:
+      - optimizer
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/grafana:/etc/grafana/provisioning/datasources
+    networks:
+      - optimizer
+
+  optimizer:
+    container_name: basic
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      - redis
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_URL: "postgres://postgres:mrbelka12000@psql:5432/optimizer?sslmode=disable"
+      REDIS_ADDR: "redis:6379"
+    restart: always
+    networks:
+      - optimizer
+
 volumes:
+  prom_data:
   redis_data:
-  postgresData:
 
 networks:
   optimizer:
