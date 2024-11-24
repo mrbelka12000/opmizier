@@ -70,6 +70,7 @@ services:
 volumes:
   prom_data:
   redis_data:
+  postgresData:
 
 networks:
   optimizer:
