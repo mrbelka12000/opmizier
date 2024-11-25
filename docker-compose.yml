@@ -19,16 +19,8 @@ services:
       POSTGRES_PASSWORD: "mrbelka12000"
     ports:
       - '5432:5432'
-
-    deploy:
-      resources:
-        limits:
-          memory: 30M
-        reservations:
-          memory: 20M
     volumes:
       - postgresData:/var/lib/postgresql/data
-      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - optimizer
 

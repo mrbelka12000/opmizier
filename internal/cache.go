@@ -4,8 +4,6 @@ import (
 	"context"
 
 	"github.com/go-redis/redis"
-
-	"github.com/mrbelka12000/optimizer/internal/models"
 )
 
 // cache decorator for retrieve database data
@@ -21,8 +19,8 @@ func newCache(redis *redis.Client, adapter adapter) *cache {
 	}
 }
 
-func (c *cache) List(ctx context.Context, req models.Request) error {
+func (c *cache) List(ctx context.Context, query string, args []any) error {
 	// TODO try to cache request data
 
-	return c.adapter.List(ctx, req)
+	return c.adapter.List(ctx, query, args)
 }

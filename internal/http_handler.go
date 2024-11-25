@@ -7,22 +7,19 @@ import (
 )
 
 func (s *Service) RegisterHandlers(mux *http.ServeMux) {
-	mux.HandleFunc("/list", s.makeListHandler())
+	mux.HandleFunc("/list", s.makeFilterHandler())
 }
 
-func (s *Service) makeListHandler() http.HandlerFunc {
+func (s *Service) makeFilterHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req models.Request
+		var args []any
 
-		if err := s.decoder.Decode(&req, r.URL.Query()); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			s.log.Error("cannot decode url params", err)
-			return
-		}
+		args = append(args, r.URL.Query().Get("country"))
+		args = append(args, r.URL.Query().Get("customers_count"))
 
-		if err := s.next.List(r.Context(), req); err != nil {
+		if err := s.next.List(r.Context(), models.Query1, args); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			s.log.Error("cannot handle request", err)
+			s.log.Error("cannot handle request", "error", err)
 			return
 		}
 

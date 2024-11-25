@@ -30,7 +30,7 @@
 
     Me) If optimizing the queries didn’t fully resolve the performance issues, I would move on to 
     database-level and infrastructure-level strategies. Here’s what I would consider next:
-        - Caching, (TODO you can implement it in code):
+        - Caching:
             Implement a caching layer, such as Redis or Memcached, to store frequently 
             accessed data. This reduces the load on the database by serving repeat queries from the cache.
 
@@ -67,9 +67,9 @@
 
     Me) If resources are limited, I would prioritize the solutions that provide the most immediate 
     and cost-effective impact while minimizing disruption to the system. Here's how I would approach prioritization:
-        1) Caching (Quick, impactful, minimal cost).
+        1) Query and Index Optimization (Straightforward, direct database benefit).
 
-        2) Query and Index Optimization (Straightforward, direct database benefit).
+        2) Caching (Quick, impactful, minimal cost).
 
         3) Read Replicas Utilization (Leverage existing or easily deployable infrastructure).
 
@@ -92,6 +92,4 @@
         4) Cost and complexity of further optimizations outweigh the expected benefits.
 
         5) A monitoring and alerting system is in place for future issues.
-
-
 

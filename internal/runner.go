@@ -27,6 +27,6 @@ func Run(
 	httpServer.Start()
 
 	log.Info("Server started")
-	<-httpServer.Ch()
-	return nil
+
+	return <-httpServer.Ch()
 }
