@@ -34,12 +34,12 @@ func (r *Repo) List(ctx context.Context, req models.Request) error {
 
 	if req.FirstName != "" {
 		args = append(args, req.FirstName)
-		queryWhere += fmt.Sprintf(" 'First Name' = $%v AND", len(args))
+		queryWhere += fmt.Sprintf(` "First Name" = $%v AND`, len(args))
 	}
 
 	if req.LastName != "" {
 		args = append(args, req.LastName)
-		queryWhere += fmt.Sprintf(" 'Last Name' = $%v AND", len(args))
+		queryWhere += fmt.Sprintf(` "Last Name" = $%v AND`, len(args))
 	}
 
 	if req.Company != "" {
@@ -59,12 +59,12 @@ func (r *Repo) List(ctx context.Context, req models.Request) error {
 
 	if req.Phone1 != "" {
 		args = append(args, req.Phone1)
-		queryWhere += fmt.Sprintf(" 'Phone 1' = $%v AND", len(args))
+		queryWhere += fmt.Sprintf(` "Phone 1" = $%v AND`, len(args))
 	}
 
 	if req.Phone2 != "" {
 		args = append(args, req.Phone2)
-		queryWhere += fmt.Sprintf(" 'Phone 2' = $%v AND", len(args))
+		queryWhere += fmt.Sprintf(` "Phone 2" = $%v AND`, len(args))
 	}
 
 	if req.Email != "" {
@@ -74,7 +74,7 @@ func (r *Repo) List(ctx context.Context, req models.Request) error {
 
 	if req.SubscriptionDate != "" {
 		args = append(args, req.SubscriptionDate)
-		queryWhere += fmt.Sprintf(" 'Subscription Date' = $%v AND", len(args))
+		queryWhere += fmt.Sprintf(` "Subscription Date" = $%v AND`, len(args))
 	}
 
 	if req.Website != "" {
@@ -107,5 +107,10 @@ func (r *Repo) List(ctx context.Context, req models.Request) error {
 	}
 	defer rows.Close()
 
+	var count int
+	for rows.Next() {
+		count++
+	}
+	fmt.Println(count)
 	return nil
 }
