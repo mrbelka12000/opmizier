@@ -4,7 +4,7 @@
 
 ## Part 1, read intensive:
 
-## Me - Interviewer 1:
+## Me - Interviewer:
     
     Int) Our database started to work slowly. What will you do with it ?
 
@@ -59,10 +59,6 @@
         - Separate Read and Write Workloads:
             Use eventual consistency models where appropriate to reduce locking between reads and writes.
 
-        - Queue Writes:
-            Use a queuing system like RabbitMQ or Kafka to manage write operations. 
-            This can help smooth spikes in write traffic and reduce contention on the primary database.
-        
     Int) Excellent! What would you prioritize among these if resources are limited?
 
     Me) If resources are limited, I would prioritize the solutions that provide the most immediate 
@@ -92,4 +88,43 @@
         4) Cost and complexity of further optimizations outweigh the expected benefits.
 
         5) A monitoring and alerting system is in place for future issues.
+
+---
+
+
+# Database Performance Optimization Guide
+
+This guide provides a step-by-step process to identify and resolve database performance issues.
+
+## Steps to Solve the Problem
+
+1. **Examine `pg_stat_statements`**  
+   Start by analyzing query performance using `pg_stat_statements`. Run diagnostic queries in the database to gather insights into slow or resource-intensive queries. You can find them in db/1.queries.sql
+
+2. **Investigate Problematic Queries**  
+   Identify queries causing performance bottlenecks, such as high memory usage or long execution times.
+
+3. **Analyze Slow Queries**
+    - Define metrics such as SLA thresholds or log detailed request-response data for further analysis.
+    - Use tools like `EXPLAIN` and `EXPLAIN ANALYZE` to inspect query execution plans and pinpoint inefficiencies.
+
+4. **Optimize Queries**  
+   Use the insights gained from query analysis to optimize slow or resource-intensive queries.
+
+5. **Evaluate Metrics**  
+   Reassess the metrics defined earlier to measure the effectiveness of the optimizations and identify any remaining bottlenecks.
+
+6. **Implement Caching**  
+   If performance issues persist, consider implementing caching for request-response pairs to reduce database load and improve response times.
+
+7. **Reevaluate Metrics**  
+   After introducing cache, revisit the defined metrics to ensure optimal performance and stability.
+
+8. **Explore Advanced Optimization Techniques**  
+   If necessary, implement advanced strategies such as:
+    - **Replication**: For high availability and read scalability.
+    - **Sharding**: To distribute data horizontally across multiple nodes.
+    - **Partitioning**: For managing large datasets more efficiently.
+
+---
 

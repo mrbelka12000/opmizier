@@ -17,6 +17,9 @@ services:
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "mrbelka12000"
+    command: >
+      postgres
+      -c shared_preload_libraries='pg_stat_statements'
     ports:
       - '5432:5432'
     volumes:
