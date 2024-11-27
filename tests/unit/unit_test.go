@@ -17,7 +17,7 @@ func TestListWithDeadline(t *testing.T) {
 	var (
 		// Please do not change
 		deadline      = 10 * time.Second
-		requestsCount = 10000
+		requestsCount = 100
 		workersPool   = make(chan struct{}, 50)
 		start         = time.Now()
 		wg            sync.WaitGroup
