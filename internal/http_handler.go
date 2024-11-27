@@ -3,14 +3,17 @@ package internal
 import (
 	"net/http"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	"github.com/mrbelka12000/optimizer/internal/models"
 )
 
-func (s *Service) RegisterHandlers(mux *http.ServeMux) {
+func (s *service) RegisterHandlers(mux *http.ServeMux) {
 	mux.HandleFunc("/list", s.makeFilterHandler())
+	mux.Handle("/metrics", promhttp.Handler())
 }
 
-func (s *Service) makeFilterHandler() http.HandlerFunc {
+func (s *service) makeFilterHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var args []any
 

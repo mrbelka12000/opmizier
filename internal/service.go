@@ -4,14 +4,14 @@ import (
 	"log/slog"
 )
 
-// Service simple business logic implementer
-type Service struct {
+// service simple business logic implementer
+type service struct {
 	next adapter
 	log  *slog.Logger
 }
 
-func NewService(adapter adapter, log *slog.Logger) *Service {
-	return &Service{
+func newService(adapter adapter, log *slog.Logger) *service {
+	return &service{
 		next: adapter,
 		log:  log,
 	}

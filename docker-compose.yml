@@ -12,11 +12,11 @@ services:
       - redis_data:/data
 
   postgres:
-    image: mrbelka12000/postgres-with-data:0.1.1
+    image: mrbelka12000/postgres_data_smaller
     container_name: psql
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "mrbelka12000"
+      POSTGRES_PASSWORD: mrbelka12000
+      POSTGRES_USER: postgres
     command: >
       postgres
       -c shared_preload_libraries='pg_stat_statements'

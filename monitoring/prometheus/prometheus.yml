@@ -18,4 +18,5 @@ scrape_configs:
     scheme: http
     static_configs:
       - targets:
-          - localhost:9090
+          - grafana:9090
+          - basic:8080

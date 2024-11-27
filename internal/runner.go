@@ -17,7 +17,8 @@ func Run(
 ) error {
 
 	cache := newCache(client, repo)
-	srv := NewService(cache, log)
+	metrics := newMetricsMiddleware(cache, log)
+	srv := newService(metrics, log)
 
 	mux := http.NewServeMux()
 	srv.RegisterHandlers(mux)
