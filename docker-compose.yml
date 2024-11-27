@@ -23,7 +23,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - postgresData:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - optimizer
 
@@ -95,7 +95,7 @@ services:
 volumes:
   prom_data:
   redis_data:
-  postgresData:
+  postgres_data:
 
 networks:
   optimizer:
