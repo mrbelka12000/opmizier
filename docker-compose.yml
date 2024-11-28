@@ -12,7 +12,8 @@ services:
       - redis_data:/data
 
   postgres:
-    image: mrbelka12000/postgres_data_smaller
+    image: mrbelka12000/postgres_data_smaller # comment if you have linux/amd64
+### image: mrbelka12000/postgres_data_smaller_linux # comment if you have amr64
     container_name: psql
     environment:
       POSTGRES_PASSWORD: mrbelka12000
@@ -80,7 +81,8 @@ services:
       dockerfile: Dockerfile
       context: .
 
-    mem_limit: 20m # Restricts memory usage to 256MB
+    mem_limit: 100m # memory limit
+    cpuset: '4' # cpu limit
     depends_on:
       - redis
       - postgres
