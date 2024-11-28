@@ -12,8 +12,6 @@ import (
 	"time"
 )
 
-// 7.143224375 with cache + index
-// 27.186909833 index only
 func TestListWithDeadline(t *testing.T) {
 
 	var (

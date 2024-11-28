@@ -81,8 +81,8 @@ services:
       dockerfile: Dockerfile
       context: .
 
-    mem_limit: 30m
-    cpuset: '4'
+    mem_limit: 100m # memory limit
+    cpuset: '4' # cpu limit
     depends_on:
       - redis
       - postgres
