@@ -39,7 +39,7 @@ var (
 	)
 )
 
-func (m *metricsMiddleware) List(ctx context.Context, query string, args []any) error {
+func (m *metricsMiddleware) List(ctx context.Context, query string) error {
 	start := time.Now()
 
 	defer func() {
