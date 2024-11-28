@@ -5,5 +5,5 @@ import (
 )
 
 type adapter interface {
-	List(ctx context.Context, query string, args []any) error
+	List(ctx context.Context, query string) error
 }

@@ -1,6 +1,105 @@
-# opmizier
+# optimizer
 
-### Project to learn how to optimize big data queries
+## Overview
+This project consists of **three different SQL queries** to optimize. Your task is to improve the performance of each query while maintaining the correctness of results. Tests are provided to validate your optimizations.
+
+- **Query 1**: Focus on optimizing a high volume of requests with a relatively simple query.
+- **Queries 2 and 3**: Focus on optimizing and analyzing large, complex SQL queries. These queries have minimal request loads but strict timeout requirements.
+
+### Goals:
+1. Learn how to optimize a large number of requests with a small query.
+2. Understand how to analyze and optimize complex SQL queries with tight performance constraints.
+
+**Note:** After passing the tests for a query, you may remove the previous code and proceed to the next one.
+
+---
+
+## Usage
+
+### Start the environment:
+```bash
+docker-compose up --build
+```
+
+---
+
+## Testing Your Implementation
+ 
+- To verify your implementation, you can run the unit tests located in the `tests/unit` folder.  
+Each test file corresponds to a specific query.
+
+---
+
+
+## After completing the task:
+1) Shut down your environment and remove local volumes:
+```bash
+docker-compose down
+docker volume rm optimizer_prom_data optimizer_redis_data optimizer_postgres_data 
+```
+2) Proceed to the next query.
+
+---
+
+## Additional Information:
+### Grafana Dashboard
+- A pre-configured Grafana instance is available with two dashboards.
+- Access Grafana at: http://localhost:3000
+- You may add or replace information on the dashboards.
+- **Important**: Grafana is not persistent by default. Ensure you make it persistent or proceed cautiously.
+
+---
+
+## PostgreSQL Debugging Tools
+- Use EXPLAIN and EXPLAIN ANALYZE to understand and debug your query plans effectively.
+
+---
+
+## Best Practices:
+
+- Implement caching mechanisms, metrics, and logging where necessary.
+- If you change the structure of a query, ensure that the responses remain consistent with the original implementation.
+- Do not modify the provided tests, as they are essential for tracking your progress.
+
+---
+
+
+## Database Performance Optimization Guide
+
+This guide provides a step-by-step process to identify and resolve database performance issues.
+
+## Steps to Solve the Problem
+
+1. **Examine `pg_stat_statements`**  
+   Start by analyzing query performance using `pg_stat_statements`. Run diagnostic queries in the database to gather insights into slow or resource-intensive queries. You can find them in db/1.queries.sql
+
+2. **Investigate Problematic Queries**  
+   Identify queries causing performance bottlenecks, such as high memory usage or long execution times.
+
+3. **Analyze Slow Queries**
+   - Define metrics such as SLA thresholds or log detailed request-response data for further analysis.
+   - Use tools like `EXPLAIN` and `EXPLAIN ANALYZE` to inspect query execution plans and pinpoint inefficiencies.
+
+4. **Optimize Queries**  
+   Use the insights gained from query analysis to optimize slow or resource-intensive queries.
+
+5. **Evaluate Metrics**  
+   Reassess the metrics defined earlier to measure the effectiveness of the optimizations and identify any remaining bottlenecks.
+
+6. **Implement Caching**  
+   If performance issues persist, consider implementing caching for request-response pairs to reduce database load and improve response times.
+
+7. **Reevaluate Metrics**  
+   After introducing cache, revisit the defined metrics to ensure optimal performance and stability.
+
+8. **Explore Advanced Optimization Techniques**  
+   If necessary, implement advanced strategies such as:
+   - **Replication**: For high availability and read scalability.
+   - **Sharding**: To distribute data horizontally across multiple nodes.
+   - **Partitioning**: For managing large datasets more efficiently.
+
+---
+
 
 ## Part 1, read intensive:
 
@@ -88,43 +187,6 @@
         4) Cost and complexity of further optimizations outweigh the expected benefits.
 
         5) A monitoring and alerting system is in place for future issues.
-
----
-
-
-# Database Performance Optimization Guide
-
-This guide provides a step-by-step process to identify and resolve database performance issues.
-
-## Steps to Solve the Problem
-
-1. **Examine `pg_stat_statements`**  
-   Start by analyzing query performance using `pg_stat_statements`. Run diagnostic queries in the database to gather insights into slow or resource-intensive queries. You can find them in db/1.queries.sql
-
-2. **Investigate Problematic Queries**  
-   Identify queries causing performance bottlenecks, such as high memory usage or long execution times.
-
-3. **Analyze Slow Queries**
-    - Define metrics such as SLA thresholds or log detailed request-response data for further analysis.
-    - Use tools like `EXPLAIN` and `EXPLAIN ANALYZE` to inspect query execution plans and pinpoint inefficiencies.
-
-4. **Optimize Queries**  
-   Use the insights gained from query analysis to optimize slow or resource-intensive queries.
-
-5. **Evaluate Metrics**  
-   Reassess the metrics defined earlier to measure the effectiveness of the optimizations and identify any remaining bottlenecks.
-
-6. **Implement Caching**  
-   If performance issues persist, consider implementing caching for request-response pairs to reduce database load and improve response times.
-
-7. **Reevaluate Metrics**  
-   After introducing cache, revisit the defined metrics to ensure optimal performance and stability.
-
-8. **Explore Advanced Optimization Techniques**  
-   If necessary, implement advanced strategies such as:
-    - **Replication**: For high availability and read scalability.
-    - **Sharding**: To distribute data horizontally across multiple nodes.
-    - **Partitioning**: For managing large datasets more efficiently.
 
 ---
 

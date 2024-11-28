@@ -20,9 +20,9 @@ func New(db *sql.DB) *Repo {
 	}
 }
 
-func (r *Repo) List(ctx context.Context, query string, args []any) error {
+func (r *Repo) List(ctx context.Context, query string) error {
 
-	rows, err := r.db.QueryContext(ctx, query, args...)
+	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
 		return fmt.Errorf("repository.List: %w", err)
 	}

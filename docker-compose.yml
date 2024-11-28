@@ -23,12 +23,13 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - postgresData:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - optimizer
 
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter
+    container_name: psql_exporter
     ports:
       - 9187:9187
     environment:
@@ -36,10 +37,8 @@ services:
     links:
       - postgres
       - prometheus
-
     networks:
       - optimizer
-
 
   prometheus:
     image: prom/prometheus
@@ -80,6 +79,8 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+
+    mem_limit: 20m # Restricts memory usage to 256MB
     depends_on:
       - redis
       - postgres
@@ -88,14 +89,14 @@ services:
     environment:
       POSTGRES_URL: "postgres://postgres:mrbelka12000@psql:5432/optimizer?sslmode=disable"
       REDIS_ADDR: "redis:6379"
-    restart: always
+
     networks:
       - optimizer
 
 volumes:
   prom_data:
   redis_data:
-  postgresData:
+  postgres_data:
 
 networks:
   optimizer:

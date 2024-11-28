@@ -46,7 +46,7 @@ func (m *metricsMiddleware) List(ctx context.Context, query string, args []any) 
 		m.write("List", time.Since(start).Seconds())
 	}()
 
-	return m.next.List(ctx, query, args)
+	return m.next.List(ctx, query)
 }
 
 func (m *metricsMiddleware) write(method string, duration float64) {
