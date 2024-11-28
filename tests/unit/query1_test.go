@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"runtime"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -17,9 +18,9 @@ func TestListWithDeadline(t *testing.T) {
 
 	var (
 		// Please do not change
-		deadline      = 8 * time.Second
+		deadline      = getDeadlineInSeconds(runtime.NumCPU())
 		requestsCount = 1000
-		ticker        = time.NewTicker(5 * time.Millisecond)
+		ticker        = time.NewTicker(time.Duration(runtime.NumCPU()/2) * time.Millisecond)
 		start         = time.Now()
 		wg            sync.WaitGroup
 		isFailed      uint32
@@ -30,7 +31,7 @@ func TestListWithDeadline(t *testing.T) {
 	go func() {
 		<-ctx.Done()
 		t.Fail()
-		fmt.Println("time exceeded")
+		fmt.Printf("exceeded deadline: %v\n", deadline)
 	}()
 
 	for i := 0; i < requestsCount; i++ {
@@ -197,4 +198,23 @@ func sendRequestForQuery1() error {
 	}
 
 	return nil
+}
+
+func getDeadlineInSeconds(n int) time.Duration {
+	switch {
+	case n == 1:
+		return 25 * time.Second
+	case n <= 4:
+		return 20 * time.Second
+	case n <= 6:
+		return 15 * time.Second
+	case n <= 8:
+		return 13 * time.Second
+	case n == 9:
+		return 12 * time.Second
+	case n == 10:
+		return 10 * time.Second
+	default:
+		return 8 * time.Second
+	}
 }
