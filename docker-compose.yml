@@ -81,7 +81,7 @@ services:
       context: .
 
     mem_limit: 30m
-    cpuset: 8
+    cpuset: '.8'
     depends_on:
       - redis
       - postgres
