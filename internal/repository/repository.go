@@ -24,9 +24,13 @@ func (r *Repo) List(ctx context.Context, query string) error {
 
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
-		return fmt.Errorf("repository.List: %w", err)
+		return fmt.Errorf("query: %w", err)
 	}
-	defer rows.Close()
+
+	err = rows.Close()
+	if err != nil {
+		return fmt.Errorf("rows close: %w", err)
+	}
 
 	return rows.Err()
 }
