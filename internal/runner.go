@@ -16,7 +16,7 @@ func Run(
 	log *slog.Logger,
 ) error {
 
-	cache := newCache(client, repo, log)
+	cache := newCache(client, repo)
 	metrics := newMetricsMiddleware(cache, log)
 	srv := newService(metrics, log)
 

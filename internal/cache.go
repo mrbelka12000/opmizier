@@ -19,8 +19,8 @@ func newCache(redis *redis.Client, adapter adapter) *cache {
 	}
 }
 
-func (c *cache) List(ctx context.Context, query string, args []any) error {
+func (c *cache) List(ctx context.Context, query string) error {
 	// TODO try to cache request data
 
-	return c.adapter.List(ctx, query, args)
+	return c.adapter.List(ctx, query)
 }
