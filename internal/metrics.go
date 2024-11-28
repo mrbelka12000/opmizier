@@ -3,6 +3,8 @@ package internal
 import (
 	"context"
 	"log/slog"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 const (
@@ -16,12 +18,13 @@ type metricsMiddleware struct {
 }
 
 func newMetricsMiddleware(next adapter, log *slog.Logger) *metricsMiddleware {
+	prometheus.MustRegister()
 	return &metricsMiddleware{
 		next: next,
 		log:  log,
 	}
 }
 
-func (m *metricsMiddleware) List(ctx context.Context, query string, args []any) error {
-	return m.next.List(ctx, query, args)
+func (m *metricsMiddleware) List(ctx context.Context, query string) error {
+	return m.next.List(ctx, query)
 }

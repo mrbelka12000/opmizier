@@ -25,5 +25,8 @@ func Connect() (*sql.DB, error) {
 		return nil, fmt.Errorf("ping: %w", err)
 	}
 
+	db.SetMaxOpenConns(100)
+	db.SetMaxIdleConns(50)
+
 	return db, nil
 }

@@ -11,11 +11,11 @@ SELECT
 FROM
     customers
 WHERE
-    country = $1 
+    country = '%v'
 GROUP BY
     country, city
 HAVING
-    COUNT("Customer Id") >= $2
+    COUNT("Customer Id") >= %v
 ORDER BY
     customer_count DESC;
 `
@@ -23,15 +23,15 @@ ORDER BY
 	// Query2 : Retrieve the count of customers grouped by country, city, and company, showing combinations with at least n customers.
 	//Level2
 	Query2 = `
-SELECT 
-    country, 
-    city, 
-    company, 
+SELECT
+    city,
+    "Subscription Date",
     COUNT(*) AS customer_count
 FROM customers
-WHERE country = $1 AND city = $2  AND company = $3
-GROUP BY country, city, company
-HAVING COUNT(*) > $4
+WHERE
+   "Subscription Date" > '%v' -- Ensure valid date format
+GROUP BY city, "Subscription Date"
+HAVING COUNT(*) > %v -- Dynamic threshold for customer count
 ORDER BY customer_count DESC;
 `
 
@@ -45,9 +45,9 @@ WITH subscription_data AS (
         EXTRACT(YEAR FROM TO_DATE("Subscription Date", 'YYYY-MM-DD')) AS subscription_year,
         COUNT(*) AS customer_count
     FROM customers
-    WHERE country = $1
+    WHERE country = '%v'
       AND "Subscription Date" ~ '^\d{4}-\d{2}-\d{2}$'
-      AND EXTRACT(YEAR FROM TO_DATE("Subscription Date", 'YYYY-MM-DD')) >= EXTRACT(YEAR FROM CURRENT_DATE) - $2
+      AND EXTRACT(YEAR FROM TO_DATE("Subscription Date", 'YYYY-MM-DD')) >= EXTRACT(YEAR FROM CURRENT_DATE) - '%v'
     GROUP BY country, company, EXTRACT(YEAR FROM TO_DATE("Subscription Date", 'YYYY-MM-DD'))
 ),
 
@@ -70,7 +70,7 @@ FROM subscription_data
 WHERE company IN (
     SELECT company 
     FROM ranked_companies 
-    WHERE rank <= $3
+    WHERE rank <= %v
 )
 ORDER BY country, company, subscription_year;
 `

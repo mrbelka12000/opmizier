@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -19,12 +20,15 @@ func (s *service) RegisterHandlers(mux *http.ServeMux) {
 func (s *service) makeGetDataByCountryAndCustomersCountHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		args := []any{
-			r.URL.Query().Get("country"),
-			r.URL.Query().Get("customers_count"),
-		}
+		values := r.URL.Query()
 
-		if err := s.next.List(r.Context(), models.Query1, args); err != nil {
+		if err := s.next.List(
+			r.Context(),
+			fmt.Sprintf(
+				models.Query1,
+				values.Get("country"),
+				values.Get("customers_count"),
+			)); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			s.log.Error("cannot handle Query1 request", "error", err)
 			return
@@ -37,14 +41,13 @@ func (s *service) makeGetDataByCountryAndCustomersCountHandler() http.HandlerFun
 // makeGetDataByCountryAndCityAndCompanyAndCustomersCountHandler to optimize a database workload, performance
 func (s *service) makeGetDataByCountryAndCityAndCompanyAndCustomersCountHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		args := []any{
-			r.URL.Query().Get("country"),
-			r.URL.Query().Get("city"),
-			r.URL.Query().Get("company"),
-			r.URL.Query().Get("customers_count"),
-		}
+		values := r.URL.Query()
 
-		if err := s.next.List(r.Context(), models.Query2, args); err != nil {
+		if err := s.next.List(r.Context(), fmt.Sprintf(
+			models.Query2,
+			values.Get("subscription_date"),
+			values.Get("customers_count"),
+		)); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			s.log.Error("cannot handle Query2 request", "error", err)
 			return
@@ -57,13 +60,15 @@ func (s *service) makeGetDataByCountryAndCityAndCompanyAndCustomersCountHandler(
 // makeGetDataByCompaniesRankAndPastYearsHandler to optimize a database workload, performance but harder than previous
 func (s *service) makeGetDataByCompaniesRankAndPastYearsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		args := []any{
-			r.URL.Query().Get("country"),
-			r.URL.Query().Get("past_years"),
-			r.URL.Query().Get("rank"),
-		}
 
-		if err := s.next.List(r.Context(), models.Query3, args); err != nil {
+		values := r.URL.Query()
+
+		if err := s.next.List(r.Context(), fmt.Sprintf(
+			models.Query3,
+			values.Get("country"),
+			values.Get("past_years"),
+			values.Get("rank"),
+		)); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			s.log.Error("cannot handle Query3 request", "error", err)
 			return

@@ -35,7 +35,7 @@ Each test file corresponds to a specific query.
 1) Shut down your environment and remove local volumes:
 ```bash
 docker-compose down
-docker volume rm prom_data redis_data postgres_data 
+docker volume rm optimizer_prom_data optimizer_redis_data optimizer_postgres_data 
 ```
 2) Proceed to the next query.
 
