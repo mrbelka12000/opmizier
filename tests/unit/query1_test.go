@@ -12,11 +12,10 @@ import (
 	"time"
 )
 
-func TestListWithDeadline(t *testing.T) {
-
+func TestQuery1(t *testing.T) {
 	var (
 		// Please do not change
-		deadline      = getDeadlineInSeconds(runtime.NumCPU())
+		deadline      = getDeadlineInSecondsForQuery1(runtime.NumCPU())
 		requestsCount = 1000
 		ticker        = time.NewTicker(time.Duration(runtime.NumCPU()/2) * time.Millisecond)
 		start         = time.Now()
@@ -198,7 +197,7 @@ func sendRequestForQuery1() error {
 	return nil
 }
 
-func getDeadlineInSeconds(n int) time.Duration {
+func getDeadlineInSecondsForQuery1(n int) time.Duration {
 	switch {
 	case n == 1:
 		return 25 * time.Second
