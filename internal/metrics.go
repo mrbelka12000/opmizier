@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/google/uuid"
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
 )
 
@@ -41,15 +42,17 @@ var (
 
 func (m *metricsMiddleware) List(ctx context.Context, query string) error {
 	start := time.Now()
+	id := uuid.New().String()
 
+	m.log.Info(fmt.Sprintf("Enter: %s", id))
 	defer func() {
 		m.write("List", time.Since(start).Seconds())
+		m.log.Info(fmt.Sprintf("Finished: %s , spent: %.5f seconds", id, time.Since(start).Seconds()))
 	}()
 
 	return m.next.List(ctx, query)
 }
 
 func (m *metricsMiddleware) write(method string, duration float64) {
-	m.log.Info(fmt.Sprintf("spent %v on %s", duration, method))
 	m.latency.WithLabelValues("optimizer", method).Set(duration)
 }
