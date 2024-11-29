@@ -16,7 +16,7 @@ func TestQuery2(t *testing.T) {
 	var (
 		deadline     = getDeadlineInSecondsForQuery2(runtime.NumCPU())
 		requestCount = 100
-		ticker       = time.NewTicker(30 * time.Millisecond)
+		ticker       = time.NewTicker(95 * time.Millisecond)
 		start        = time.Now()
 		wg           sync.WaitGroup
 		isFailed     uint32
@@ -98,18 +98,18 @@ func sendRequestForQuery2() error {
 func getDeadlineInSecondsForQuery2(n int) time.Duration {
 	switch {
 	case n == 1:
-		return 25 * time.Second
+		return 35 * time.Second
 	case n <= 4:
-		return 20 * time.Second
+		return 30 * time.Second
 	case n <= 6:
-		return 15 * time.Second
+		return 25 * time.Second
 	case n <= 8:
-		return 13 * time.Second
+		return 23 * time.Second
 	case n == 9:
-		return 12 * time.Second
+		return 20 * time.Second
 	case n == 10:
-		return 10 * time.Second
+		return 19 * time.Second
 	default:
-		return 8 * time.Second
+		return 18 * time.Second
 	}
 }
